@@ -38,12 +38,6 @@
     font-weight: bold;
     text-align: center;
   }
-  .correct {
-    color: green;
-  }
-  .incorrect {
-    color: red;
-  }
 </style>
 </head>
 <body>
@@ -51,77 +45,25 @@
 <h1>General Knowledge Quiz</h1>
 
 <div id="quiz-container"></div>
-<button id="submit-btn">Submit</button>
+<button id="submit-btn" disabled>Submit</button>
 
 <div id="score"></div>
 
 <script>
   const questionPool = [
-    {
-      question: "What is the capital of France?",
-      options: ["Paris", "Berlin", "Rome", "Madrid"],
-      answer: "Paris"
-    },
-    {
-      question: "Who wrote 'Hamlet'?",
-      options: ["Charles Dickens", "William Shakespeare", "Mark Twain", "Leo Tolstoy"],
-      answer: "William Shakespeare"
-    },
-    {
-      question: "What planet is known as the Red Planet?",
-      options: ["Venus", "Saturn", "Mars", "Jupiter"],
-      answer: "Mars"
-    },
-    {
-      question: "Which element has the chemical symbol 'O'?",
-      options: ["Gold", "Oxygen", "Silver", "Iron"],
-      answer: "Oxygen"
-    },
-    {
-      question: "Who painted the Mona Lisa?",
-      options: ["Vincent Van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Michelangelo"],
-      answer: "Leonardo da Vinci"
-    },
-    {
-      question: "In which year did the Titanic sink?",
-      options: ["1912", "1905", "1923", "1898"],
-      answer: "1912"
-    },
-    {
-      question: "What is the largest mammal?",
-      options: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"],
-      answer: "Blue Whale"
-    },
-    {
-      question: "Which country hosted the 2016 Summer Olympics?",
-      options: ["China", "Brazil", "UK", "Russia"],
-      answer: "Brazil"
-    },
-    {
-      question: "What is the smallest prime number?",
-      options: ["0", "1", "2", "3"],
-      answer: "2"
-    },
-    {
-      question: "Who discovered penicillin?",
-      options: ["Alexander Fleming", "Marie Curie", "Isaac Newton", "Albert Einstein"],
-      answer: "Alexander Fleming"
-    },
-    {
-      question: "Which ocean is the largest?",
-      options: ["Atlantic", "Indian", "Pacific", "Arctic"],
-      answer: "Pacific"
-    },
-    {
-      question: "Which gas do plants absorb from the atmosphere?",
-      options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"],
-      answer: "Carbon Dioxide"
-    },
-    {
-      question: "What currency is used in Japan?",
-      options: ["Yen", "Won", "Dollar", "Euro"],
-      answer: "Yen"
-    }
+    { question: "What is the capital of France?", options: ["Paris", "Berlin", "Rome", "Madrid"], answer: "Paris" },
+    { question: "Who wrote 'Hamlet'?", options: ["Charles Dickens", "William Shakespeare", "Mark Twain", "Leo Tolstoy"], answer: "William Shakespeare" },
+    { question: "What planet is known as the Red Planet?", options: ["Venus", "Saturn", "Mars", "Jupiter"], answer: "Mars" },
+    { question: "Which element has the chemical symbol 'O'?", options: ["Gold", "Oxygen", "Silver", "Iron"], answer: "Oxygen" },
+    { question: "Who painted the Mona Lisa?", options: ["Vincent Van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Michelangelo"], answer: "Leonardo da Vinci" },
+    { question: "In which year did the Titanic sink?", options: ["1912", "1905", "1923", "1898"], answer: "1912" },
+    { question: "What is the largest mammal?", options: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"], answer: "Blue Whale" },
+    { question: "Which country hosted the 2016 Summer Olympics?", options: ["China", "Brazil", "UK", "Russia"], answer: "Brazil" },
+    { question: "What is the smallest prime number?", options: ["0", "1", "2", "3"], answer: "2" },
+    { question: "Who discovered penicillin?", options: ["Alexander Fleming", "Marie Curie", "Isaac Newton", "Albert Einstein"], answer: "Alexander Fleming" },
+    { question: "Which ocean is the largest?", options: ["Atlantic", "Indian", "Pacific", "Arctic"], answer: "Pacific" },
+    { question: "Which gas do plants absorb from the atmosphere?", options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], answer: "Carbon Dioxide" },
+    { question: "What currency is used in Japan?", options: ["Yen", "Won", "Dollar", "Euro"], answer: "Yen" }
   ];
 
   const quizContainer = document.getElementById("quiz-container");
@@ -142,10 +84,9 @@
   function loadQuiz() {
     selectedAnswers = {};
     scoreDisplay.innerHTML = "";
-    submitBtn.disabled = false;
+    submitBtn.disabled = true; // disable until all answered
 
     currentQuestions = shuffle([...questionPool]).slice(0, 10);
-
     quizContainer.innerHTML = "";
 
     currentQuestions.forEach((q, index) => {
@@ -172,6 +113,11 @@
 
         optionRadio.addEventListener("change", (e) => {
           selectedAnswers[index] = e.target.value;
+
+          // Enable submit only when all questions are answered
+          if (Object.keys(selectedAnswers).length === currentQuestions.length) {
+            submitBtn.disabled = false;
+          }
         });
 
         optionLabel.appendChild(optionRadio);
@@ -216,7 +162,11 @@
   }
 
   submitBtn.addEventListener("click", () => {
-    // Removed required answers check, so user can submit anytime
+    // Final validation to ensure no unanswered question
+    if (Object.keys(selectedAnswers).length < currentQuestions.length) {
+      alert("⚠️ Please answer all questions before submitting.");
+      return;
+    }
     showScore();
   });
 

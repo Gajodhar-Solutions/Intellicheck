@@ -219,6 +219,9 @@
 
   function updateProgressBar() {
     const totalQuestions = currentQuestions.length;
+    const answeredCount = Object.keys(selectedAnswers).length;
+    const percent = (answeredCount / totalQuestions) * 100;
+    progressBar.style.width = percent + "%";
     
   }
 

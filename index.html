@@ -161,7 +161,6 @@
 
       q.options.forEach(option => {
         const optionItem = document.createElement("li");
-
         const optionLabel = document.createElement("label");
         optionLabel.style.cursor = "pointer";
 
@@ -195,7 +194,6 @@
     }
 
     scoreDisplay.innerHTML = `You scored ${score} out of ${currentQuestions.length}!`;
-
     submitBtn.disabled = true;
 
     const questionBlocks = document.querySelectorAll(".question-block");
@@ -216,7 +214,14 @@
   }
 
   submitBtn.addEventListener("click", () => {
-    // Removed required answers check, so user can submit anytime
+    const totalQuestions = currentQuestions.length;
+    const answeredCount = Object.keys(selectedAnswers).length;
+
+    if (answeredCount < totalQuestions) {
+      alert(`Please answer all ${totalQuestions} questions before submitting.`);
+      return;
+    }
+
     showScore();
   });
 

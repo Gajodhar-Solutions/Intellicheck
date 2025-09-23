@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animated Dashboard with Stars</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0d0620; /* Solid dark color for the star background to show */
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* --- MODIFICATION 1: Starry Background Effect --- */
+        @keyframes move-stars {
+            from { transform: translateY(0px); }
+            to   { transform: translateY(-2000px); } /* Moves stars up the screen */
+        }
+
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            background: transparent;
+        }
+        
+        /* Each layer of stars has a different size, density, and animation speed for a parallax effect */
+        .stars.s1 {
+            background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><circle cx="2" cy="2" r="1" fill="white"/></svg>') repeat;
+            background-size: 400px 400px;
+            animation: move-stars 150s linear infinite;
+        }
+        .stars.s2 {
+            background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6"><circle cx="3" cy="3" r="1.5" fill="white"/></svg>') repeat;
+            background-size: 300px 300px;
+            animation: move-stars 100s linear infinite;
+        }
+        .stars.s3 {
+            background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"><circle cx="4" cy="4" r="2" fill="white"/></svg>') repeat;
+            background-size: 200px 200px;
+            animation: move-stars 50s linear infinite;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 900px;
+            height: 250px;
+            background: radial-gradient(ellipse at center, rgba(123, 31, 162, 0.6) 0%, rgba(123, 31, 162, 0) 70%);
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.8;
+        }
+
+        /* --- MODIFICATION 2: White Glowing Card Effect --- */
+        .dashboard-container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            max-width: 900px;
+            width: 90%;
+            margin: 20px;
+            /* Added a subtle border and a white box-shadow for the glowing effect */
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),      /* 1. Dark shadow for depth */
+                        0 0 25px rgba(255, 255, 255, 0.1);  /* 2. White glow for light effect */
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #f0f0f0;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Blob styles from previous code */
+        .floating-element {
+            position: absolute;
+            animation: float 10s ease-in-out infinite alternate, morph 8s ease-in-out infinite alternate;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+        
+        .floating-element.one {
+            width: 100px; height: 90px;
+            background: radial-gradient(circle at center, rgba(155, 89, 182, 0.8) 0%, transparent 70%);
+            box-shadow: 0 0 25px rgba(155, 89, 182, 0.8), 0 0 40px rgba(155, 89, 182, 0.6);
+            top: 15%; left: 10%;
+            animation-duration: 12s, 10s; animation-delay: 0s, 0s;
+            border-radius: 47% 53% 70% 30% / 30% 43% 57% 70%;
+        }
+
+        .floating-element.two {
+            width: 80px; height: 85px;
+            background: radial-gradient(circle at center, rgba(241, 196, 15, 0.8) 0%, transparent 70%);
+            box-shadow: 0 0 25px rgba(241, 196, 15, 0.8), 0 0 40px rgba(241, 196, 15, 0.6);
+            top: 30%; right: 15%;
+            animation-duration: 9s, 7s; animation-delay: 2s, 1s;
+            border-radius: 68% 32% 58% 42% / 54% 53% 47% 46%;
+        }
+
+        .floating-element.three {
+            width: 110px; height: 100px;
+            background: radial-gradient(circle at center, rgba(231, 76, 60, 0.8) 0%, transparent 70%);
+            box-shadow: 0 0 25px rgba(231, 76, 60, 0.8), 0 0 40px rgba(231, 76, 60, 0.6);
+            bottom: 20%; left: 20%;
+            animation-duration: 11s, 9s; animation-delay: 4s, 2s;
+            border-radius: 32% 68% 43% 57% / 46% 40% 60% 54%;
+        }
+        
+        .floating-element.four {
+            width: 90px; height: 95px;
+            background: radial-gradient(circle at center, rgba(52, 152, 219, 0.8) 0%, transparent 70%);
+            box-shadow: 0 0 25px rgba(52, 152, 219, 0.8), 0 0 40px rgba(52, 152, 219, 0.6);
+            bottom: 10%; right: 5%;
+            animation-duration: 13s, 11s; animation-delay: 1s, 3s;
+            border-radius: 56% 44% 37% 63% / 54% 63% 37% 46%;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) translateX(20px) rotate(10deg); }
+            100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+        }
+
+        @keyframes morph {
+            0% { border-radius: 47% 53% 70% 30% / 30% 43% 57% 70%; }
+            50% { border-radius: 30% 70% 50% 50% / 50% 30% 70% 50%; }
+            100% { border-radius: 47% 53% 70% 30% / 30% 43% 57% 70%; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="stars s1"></div>
+    <div class="stars s2"></div>
+    <div class="stars s3"></div>
+
+    <div class="dashboard-container">
+        <h1>Welcome to Your Dashboard</h1>
+        <p>A place for your insights and data.</p>
+        </div>
+    
+    <div class="floating-element one"></div>
+    <div class="floating-element two"></div>
+    <div class="floating-element three"></div>
+    <div class="floating-element four"></div>
+</body>
+</html>

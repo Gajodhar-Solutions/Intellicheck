@@ -11,7 +11,15 @@ def save_student_data():
     city = input("Enter City: ")
     name = input("Enter Name: ")
 
-    data = input[rollno,std,schoolcode,city,name]
+# Create a dictionary
+    data = {
+        "Roll No": [rollno],
+        "Std": [std],
+        "School Code": [schoolcode],
+        "City": [city],
+        "Name": [name]
+    }
+
 
     df_new = pd.DataFrame(data)
 

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -157,6 +158,23 @@
             h1 { font-size: 2.2rem; }
             .floating-element { width: 60px; height: 60px; }
         }
+
+        /* Button Style for Quiz Redirect */
+        .quiz-btn {
+            background-color: #3498db;
+            color: white;
+            font-size: 1.1rem;
+            padding: 15px 30px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
+        }
+
+        .quiz-btn:hover {
+            background-color: #2980b9;
+        }
     </style>
 </head>
 <body>
@@ -169,6 +187,8 @@
             <div class="card"><h3>Mechanics</h3><p>Motion & Forces.</p></div>
             <div class="card"><h3>Electromagnetism</h3><p>Fields & Waves.</p></div>
         </div>
+        <!-- Quiz Button -->
+        <button class="quiz-btn" onclick="window.location.href='front.html';">Take the General Knowledge Quiz</button>
     </div>
     
     <div class="floating-element one"></div>
@@ -177,3 +197,4 @@
     <div class="floating-element four"></div>
 </body>
 </html>
+

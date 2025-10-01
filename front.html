@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -315,3 +316,322 @@
 
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>General Knowledge Quiz</title>
+<style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 720px;
+    margin: 40px auto 80px auto; /* add bottom margin for progress bar */
+    background: #f5f7fa;
+    padding: 30px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    color: #333;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  h1 {
+    text-align: center;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 35px;
+  }
+
+  .question-block {
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    margin-bottom: 25px;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .question-block:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  }
+
+  .question {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #34495e;
+  }
+
+  .options {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .options li {
+    margin-bottom: 12px;
+  }
+
+  label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    user-select: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+  }
+
+  input[type="radio"] {
+    margin-right: 12px;
+    accent-color: #3498db;
+    transform: scale(1.2);
+  }
+
+  label:hover {
+    background-color: #f0f8ff;
+  }
+
+  /* Highlight correct / incorrect answers after submission */
+  .correct {
+    color: #27ae60 !important;
+    font-weight: 700;
+  }
+
+  .incorrect {
+    color: #e74c3c !important;
+    font-weight: 700;
+  }
+
+  button#submit-btn {
+    background-color: #3498db;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    color: white;
+    cursor: pointer;
+    font-weight: 700;
+    width: 100%;
+    max-width: 320px;
+    display: block;
+    margin: 30px auto 0 auto;
+    box-shadow: 0 5px 12px rgba(52,152,219,0.4);
+    transition: background-color 0.3s ease;
+  }
+
+  button#submit-btn:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  button#submit-btn:hover:not(:disabled) {
+    background-color: #2980b9;
+  }
+
+  #score {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    text-align: center;
+    margin-top: 35px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    background-color: #ecf0f1;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  /* Progress Bar Container */
+  #progress-bar-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ddd;
+    height: 8px;
+    border-radius: 0 0 8px 8px;
+    overflow: hidden;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+    z-index: 9999;
+  }
+
+  #progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #27ae60; /* nice green */
+    transition: width 0.3s ease;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    body {
+      margin: 20px 10px 80px 10px;
+      padding: 20px 15px;
+    }
+
+    .question {
+      font-size: 1.1rem;
+    }
+
+    button#submit-btn {
+      font-size: 1rem;
+      padding: 12px 25px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>General Knowledge Quiz</h1>
+
+<div id="quiz-container"></div>
+<button id="submit-btn">Submit</button>
+
+<div id="score"></div>
+
+<!-- Progress Bar -->
+<div id="progress-bar-container">
+  <div id="progress-bar"></div>
+</div>
+
+<script>
+  const questionPool = [
+    { question: "What is the capital of France?", options: ["Paris", "Berlin", "Rome", "Madrid"], answer: "Paris" },
+    { question: "Who wrote 'Hamlet'?", options: ["Charles Dickens", "William Shakespeare", "Mark Twain", "Leo Tolstoy"], answer: "William Shakespeare" },
+    { question: "What planet is known as the Red Planet?", options: ["Venus", "Saturn", "Mars", "Jupiter"], answer: "Mars" },
+    { question: "Which element has the chemical symbol 'O'?", options: ["Gold", "Oxygen", "Silver", "Iron"], answer: "Oxygen" },
+    { question: "Who painted the Mona Lisa?", options: ["Vincent Van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Michelangelo"], answer: "Leonardo da Vinci" },
+    { question: "In which year did the Titanic sink?", options: ["1912", "1905", "1923", "1898"], answer: "1912" },
+    { question: "What is the largest mammal?", options: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"], answer: "Blue Whale" },
+    { question: "Which country hosted the 2016 Summer Olympics?", options: ["China", "Brazil", "UK", "Russia"], answer: "Brazil" },
+    { question: "What is the smallest prime number?", options: ["0", "1", "2", "3"], answer: "2" },
+    { question: "Who discovered penicillin?", options: ["Alexander Fleming", "Marie Curie", "Isaac Newton", "Albert Einstein"], answer: "Alexander Fleming" },
+    { question: "Which ocean is the largest?", options: ["Atlantic", "Indian", "Pacific", "Arctic"], answer: "Pacific" },
+    { question: "Which gas do plants absorb from the atmosphere?", options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], answer: "Carbon Dioxide" },
+    { question: "What currency is used in Japan?", options: ["Yen", "Won", "Dollar", "Euro"], answer: "Yen" }
+  ];
+
+  const quizContainer = document.getElementById("quiz-container");
+  const submitBtn = document.getElementById("submit-btn");
+  const scoreDisplay = document.getElementById("score");
+  const progressBar = document.getElementById("progress-bar");
+
+  let selectedAnswers = {};
+  let currentQuestions = [];
+
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  function updateProgressBar() {
+    const totalQuestions = currentQuestions.length;
+    const answeredCount = Object.keys(selectedAnswers).length;
+    const percent = (answeredCount / totalQuestions) * 100;
+    progressBar.style.width = percent + "%";
+    
+  }
+
+  function loadQuiz() {
+    selectedAnswers = {};
+    scoreDisplay.innerHTML = "";
+    submitBtn.disabled = false;
+    currentQuestions = shuffle([...questionPool]).slice(0, 10);
+    quizContainer.innerHTML = "";
+    updateProgressBar();
+
+    currentQuestions.forEach((q, index) => {
+      const qDiv = document.createElement("div");
+      qDiv.classList.add("question-block");
+
+      const questionElem = document.createElement("div");
+      questionElem.classList.add("question");
+      questionElem.textContent = `${index + 1}. ${q.question}`;
+
+      const optionsList = document.createElement("ul");
+      optionsList.classList.add("options");
+
+      q.options.forEach(option => {
+        const optionItem = document.createElement("li");
+        const optionLabel = document.createElement("label");
+
+        const optionRadio = document.createElement("input");
+        optionRadio.type = "radio";
+        optionRadio.name = "question" + index;
+        optionRadio.value = option;
+
+        optionRadio.addEventListener("change", (e) => {
+          selectedAnswers[index] = e.target.value;
+          updateProgressBar();
+        });
+
+        optionLabel.appendChild(optionRadio);
+        optionLabel.appendChild(document.createTextNode(" " + option));
+        optionItem.appendChild(optionLabel);
+        optionsList.appendChild(optionItem);
+      });
+
+      qDiv.appendChild(questionElem);
+      qDiv.appendChild(optionsList);
+      quizContainer.appendChild(qDiv);
+    });
+  }
+
+  function showScore() {
+    let score = 0;
+    for (let i = 0; i < currentQuestions.length; i++) {
+      if (selectedAnswers[i] === currentQuestions[i].answer) {
+        score++;
+      }
+    }
+
+    scoreDisplay.innerHTML = `You scored ${score} out of ${currentQuestions.length}!`;
+    submitBtn.disabled = true;
+
+    const questionBlocks = document.querySelectorAll(".question-block");
+    questionBlocks.forEach((block, idx) => {
+      const options = block.querySelectorAll("input[type=radio]");
+      options.forEach(option => {
+        option.disabled = true;
+        const parentLabel = option.parentElement;
+
+        if (option.value === currentQuestions[idx].answer) {
+          parentLabel.classList.add("correct");
+        }
+        if (option.checked && option.value !== currentQuestions[idx].answer) {
+          parentLabel.classList.add("incorrect");
+        }
+      });
+    });
+  }
+
+  submitBtn.addEventListener("click", () => {
+    const totalQuestions = currentQuestions.length;
+    const answeredCount = Object.keys(selectedAnswers).length;
+
+    if (answeredCount < totalQuestions) {
+      alert(`Please answer all ${totalQuestions} questions before submitting.`);
+      return;
+    }
+
+    showScore();
+  });
+
+  loadQuiz();
+</script>
+
+</body>
+</html>
+
